@@ -54,7 +54,6 @@ margin_top = 203.0
 margin_right = 80.0
 margin_bottom = 243.0
 rect_min_size = Vector2( 80, 40 )
-disabled = true
 text = "Create"
 
 [node name="WindowDialog" parent="MarginContainer/HBoxContainer/VBoxContainer/CreateButton" instance=ExtResource( 4 )]

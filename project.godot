@@ -21,6 +21,7 @@ enabled=PoolStringArray( "res://addons/godot_table/plugin.cfg" )
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+theme/custom_font="res://font/DroidSans.tres"
 
 [physics]
 
