@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends HBoxContainer
+
+onready var atlas: bool = false
+
+func _ready():
+	pass # Replace with function body.
+
+func render(item: Dictionary):
+	if get_child_count() > 0:
+		for i in get_children():
+			i.queue_free()
+	for entry in item:
+		var label = Label.new()
+		label.text = str(item[entry])
+		add_child(label)
+"
+
+[node name="HBoxContainer" type="HBoxContainer"]
+margin_right = 669.0
+margin_bottom = 14.0
+script = SubResource( 1 )

@@ -1,0 +1,103 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/godot_table/Table.gd" type="Script" id=1]
+[ext_resource path="res://TableTab.gd" type="Script" id=2]
+[ext_resource path="res://MySql.gd" type="Script" id=3]
+[ext_resource path="res://EditCreateWindow.tscn" type="PackedScene" id=4]
+
+[node name="Tabs" type="Tabs"]
+anchor_right = 1.005
+anchor_bottom = 0.997
+margin_right = -0.119995
+margin_bottom = -0.200012
+script = ExtResource( 2 )
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+script = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 15
+custom_constants/margin_top = 32
+custom_constants/margin_left = 19
+custom_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_left = 19.0
+margin_top = 32.0
+margin_right = 1014.0
+margin_bottom = 588.0
+grow_vertical = 0
+custom_constants/separation = 18
+alignment = 2
+
+[node name="Table" type="PanelContainer" parent="MarginContainer/HBoxContainer"]
+margin_right = 897.0
+margin_bottom = 556.0
+rect_clip_content = true
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+column_headers = [ "", "", "", "", "", "", "", "", "" ]
+min_row_count = 2
+rows = [ [ "--", "--", "--", "--", "--", "--", "--", "--", "--" ], [ "--", "--", "--", "--", "--", "--", "--", "--", "--" ] ]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 915.0
+margin_right = 995.0
+margin_bottom = 556.0
+custom_constants/separation = 15
+alignment = 1
+
+[node name="CreateButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 203.0
+margin_right = 80.0
+margin_bottom = 243.0
+rect_min_size = Vector2( 80, 40 )
+disabled = true
+text = "Create"
+
+[node name="WindowDialog" parent="MarginContainer/HBoxContainer/VBoxContainer/CreateButton" instance=ExtResource( 4 )]
+anchor_left = -11.162
+anchor_top = -4.075
+anchor_right = 0.262
+anchor_bottom = 7.775
+margin_left = 29.9601
+margin_top = 7.00002
+margin_right = 30.04
+margin_bottom = 6.99997
+
+[node name="EditButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 258.0
+margin_right = 80.0
+margin_bottom = 298.0
+rect_min_size = Vector2( 80, 40 )
+disabled = true
+text = "Edit"
+
+[node name="WindowDialog" parent="MarginContainer/HBoxContainer/VBoxContainer/EditButton" instance=ExtResource( 4 )]
+anchor_left = -11.162
+anchor_top = -4.075
+anchor_right = 0.262
+anchor_bottom = 7.775
+margin_left = 29.9601
+margin_top = 7.00002
+margin_right = 30.04
+margin_bottom = 6.99997
+
+[node name="SelectButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 313.0
+margin_right = 80.0
+margin_bottom = 353.0
+rect_min_size = Vector2( 80, 40 )
+text = "Reload"
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
+[connection signal="CLICK_ROW" from="MarginContainer/HBoxContainer/Table" to="." method="_on_Table_CLICK_ROW"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/CreateButton" to="." method="_on_CreateButton_pressed"]
+[connection signal="createEntry" from="MarginContainer/HBoxContainer/VBoxContainer/CreateButton/WindowDialog" to="." method="_on_WindowDialog_createEntry"]
+[connection signal="reloadData" from="MarginContainer/HBoxContainer/VBoxContainer/CreateButton/WindowDialog" to="." method="_on_WindowDialog_reloadData"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton" to="." method="_on_EditButton_pressed"]
+[connection signal="postChanges" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton/WindowDialog" to="." method="_on_WindowDialog_postChanges"]
+[connection signal="reloadData" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton/WindowDialog" to="." method="_on_WindowDialog_reloadData"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/SelectButton" to="." method="_on_SelectButton_pressed"]
