@@ -3,13 +3,20 @@ extends WindowDialog
 
 onready var fieldsCont = $MarginContainer/VBoxContainer/HBoxContainer/FieldsContainer
 
-signal createEntry
-signal postChanges
+onready var gkeys = []
+onready var oldValues = []
+onready var newValues = []
+
+signal createEntry(keys, newV)
+signal postChanges(keys, oldV, newV)
 signal reloadData
 
 func render(keys: Array, values: Array, tableName: String, isCreateMode: bool):
 	print(keys)
 	print(values)
+	
+	gkeys = keys
+	oldValues = values
 	var editCont = load("res://EditContainer.tscn")
 	# Let's assume keys and values have same length
 	for i in values.size():
@@ -20,22 +27,28 @@ func render(keys: Array, values: Array, tableName: String, isCreateMode: bool):
 		fieldsCont.add_child(node)
 	if isCreateMode:
 		$MarginContainer/VBoxContainer/Label.text = "Creating new entry in " + tableName
+		self.window_title = "Add new entry"
 	else:
 		$MarginContainer/VBoxContainer/Label.text = "Editing entry in " + tableName
+		self.window_title = "Edit existing entry"
 
 func _on_WindowDialog_popup_hide():
+	$"MarginContainer/VBoxContainer/Status Container/Label".text = "Operation status:"
+	gkeys = []
+	oldValues = []
+	newValues = []
 	for i in fieldsCont.get_children():
 		i.queue_free()
 
-
 func _on_Save_Button_pressed():
-	if $MarginContainer/VBoxContainer/Label.text[0] == "C":
-		emit_signal("createEntry")
-	else:
-		emit_signal("postChanges")
+	for i in fieldsCont.get_children():
+		newValues.append(i.get_node("LineEdit").text)
+	if oldValues.hash() != newValues.hash():
+		if $MarginContainer/VBoxContainer/Label.text[0] == "C":
+			emit_signal("createEntry", gkeys, newValues)
+		else:
+			emit_signal("postChanges", gkeys, newValues, oldValues)
 	
 	emit_signal("reloadData")
-	self.hide()
-
 func _on_Close_Window_pressed():
 	self.hide()

@@ -8,11 +8,21 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "DateTime",
+"language": "GDScript",
+"path": "res://addons/datetime/datetime.gd"
+} ]
+_global_script_class_icons={
+"DateTime": ""
+}
+
 [application]
 
 config/name="MySQL"
 run/main_scene="res://MainWindow.tscn"
-config/icon="res://icon.png"
+config/icon="res://assets/icon.png"
 
 [editor_plugins]
 
