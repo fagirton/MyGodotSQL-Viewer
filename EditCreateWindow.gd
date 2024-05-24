@@ -10,6 +10,7 @@ onready var newValues = []
 signal createEntry(keys, newV)
 signal postChanges(keys, oldV, newV)
 signal reloadData
+signal deleteEntry(keys, oldV)
 
 func render(keys: Array, types: Array, values: Array, tableName: String, isCreateMode: bool):
 	print(keys)
@@ -29,10 +30,12 @@ func render(keys: Array, types: Array, values: Array, tableName: String, isCreat
 		$MarginContainer/VBoxContainer/Label.text = "Creating new entry in " + tableName
 		self.window_title = "Add new entry"
 		self.find_node("Save Button").text = "Create"
+		self.find_node("Delete Button").visible = false
 	else:
 		$MarginContainer/VBoxContainer/Label.text = "Editing entry in " + tableName
 		self.window_title = "Edit existing entry"
 		self.find_node("Save Button").text = "Update"
+		self.find_node("Delete Button").visible = true
 
 func _on_WindowDialog_popup_hide():
 	$"MarginContainer/VBoxContainer/Status Container/Label".text = "Operation status:"
@@ -55,3 +58,11 @@ func _on_Save_Button_pressed():
 	emit_signal("reloadData")
 func _on_Close_Window_pressed():
 	self.hide()
+
+
+func _on_Delete_Button_pressed():
+	self.find_node("Delete Button").get_child(0).popup_centered()
+
+
+func _on_WindowDialog_ok():
+	emit_signal("deleteEntry", gkeys, oldValues)

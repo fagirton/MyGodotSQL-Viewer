@@ -98,6 +98,11 @@ rect_min_size = Vector2( 80, 40 )
 text = "Run..."
 
 [node name="WindowDialog" parent="MarginContainer/HBoxContainer/VBoxContainer/RunButton" instance=ExtResource( 5 )]
+visible = true
+margin_left = -897.0
+margin_top = -319.0
+margin_right = -34.0
+margin_bottom = 136.0
 
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="CLICK_ROW" from="MarginContainer/HBoxContainer/Table" to="." method="_on_Table_CLICK_ROW"]
@@ -106,6 +111,7 @@ text = "Run..."
 [connection signal="popup_hide" from="MarginContainer/HBoxContainer/VBoxContainer/CreateButton/WindowDialog" to="." method="_on_WindowDialog_popup_hide"]
 [connection signal="reloadData" from="MarginContainer/HBoxContainer/VBoxContainer/CreateButton/WindowDialog" to="." method="_on_WindowDialog_reloadData"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton" to="." method="_on_EditButton_pressed"]
+[connection signal="deleteEntry" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton/WindowDialog" to="." method="_on_WindowDialog_deleteEntry"]
 [connection signal="popup_hide" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton/WindowDialog" to="." method="_on_WindowDialog_popup_hide"]
 [connection signal="postChanges" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton/WindowDialog" to="." method="_on_WindowDialog_postChanges"]
 [connection signal="reloadData" from="MarginContainer/HBoxContainer/VBoxContainer/EditButton/WindowDialog" to="." method="_on_WindowDialog_reloadData"]

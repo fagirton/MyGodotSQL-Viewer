@@ -43,6 +43,17 @@ func insertValues(tableName: String, object: Dictionary): # Функция дл�
 	print(arrToCount(object.values(), "'"))
 	self.queryRun(["INSERT INTO " + tableName + "(" + arrToCount(object.keys(), "`") + ") VALUES(" + arrToCount(object.values(), "'") + ")"])
 
+func deleteEntry(tableName: String, oldObject: Dictionary):
+	var where = ""
+	for i in oldObject.keys():
+		print(typeof(oldObject[i]))
+		if typeof(oldObject[i]) == TYPE_INT or typeof(oldObject[i]) == TYPE_REAL or typeof(oldObject[i]) == TYPE_NIL: 
+			where = where + i + ' = ' + str(oldObject[i]) + ' and '
+		else:
+			where = where + i + " = '" + str(oldObject[i]) + "' and "
+	where.erase(where.length() - 5, 5)
+	self.queryRun(["DELETE FROM " + tableName + " WHERE " + where])
+
 func updateValues(tableName: String, object: Dictionary, oldObject: Dictionary): # Функция обновления значений в таблице
 	var set = ""
 	var where = ""
