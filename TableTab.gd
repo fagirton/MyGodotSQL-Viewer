@@ -8,6 +8,7 @@ onready var runB = $MarginContainer/HBoxContainer/VBoxContainer/RunButton
 
 onready var selectedLine = []
 onready var keys = []
+onready var tableSpecs = {}
 onready var windowOpen = false
 
 func _ready():
@@ -18,7 +19,7 @@ func _ready():
 	
 	$HTTPRequest.selectTable(self.name)
 
-func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
+func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):	
 	if windowOpen:
 		if $HTTPRequest.checkError(response_code, body) != null:
 			createB.get_child(0).find_node("Status Container").get_child(0).text += $HTTPRequest.checkError(response_code, body)
@@ -36,6 +37,12 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 	
 	var json = JSON.parse(body.get_string_from_utf8())
 	var res = json.result[0]
+	
+	if res[0].has("Field"):
+		for i in res:
+			tableSpecs[i["Field"]] = i["Type"]
+		return
+	
 	if typeof(json.result) == TYPE_ARRAY:
 		keys = res[0].keys()
 		table._set_column_headers(keys)
@@ -43,18 +50,19 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 		for i in res:
 			values_arr.append(i.values())
 		table.set_rows(values_arr)
+		$HTTPRequest.tableSpecs(self.name)
 
 
 func _on_CreateButton_pressed():
 	windowOpen = true
 	createB.get_child(0).popup_centered()
-	createB.get_child(0).render(keys, selectedLine, self.name, true)
+	createB.get_child(0).render(tableSpecs.keys(), tableSpecs.values(), selectedLine, self.name, true)
 
 
 func _on_EditButton_pressed():
 	windowOpen = true
 	editB.get_child(0).popup_centered()
-	editB.get_child(0).render(keys, selectedLine, self.name, false)
+	editB.get_child(0).render(tableSpecs.keys(), tableSpecs.values(), selectedLine, self.name, false)
 
 
 func _on_SelectButton_pressed():

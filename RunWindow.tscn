@@ -70,18 +70,18 @@ margin_right = 924.0
 margin_bottom = 516.0
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Status Container"]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Status Container"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 917.0
-margin_bottom = 26.0
-size_flags_vertical = 0
-text = "Operation status: "
-autowrap = true
+margin_bottom = 390.0
+text = "Operation status:"
+scroll_following = true
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 script = ExtResource( 1 )
 
 [connection signal="about_to_show" from="." to="." method="_on_WindowDialog_about_to_show"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/Run Button" to="." method="_on_Run_Button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/Close Window" to="." method="_on_Close_Window_pressed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

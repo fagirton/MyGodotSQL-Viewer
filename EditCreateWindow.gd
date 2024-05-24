@@ -11,7 +11,7 @@ signal createEntry(keys, newV)
 signal postChanges(keys, oldV, newV)
 signal reloadData
 
-func render(keys: Array, values: Array, tableName: String, isCreateMode: bool):
+func render(keys: Array, types: Array, values: Array, tableName: String, isCreateMode: bool):
 	print(keys)
 	print(values)
 	
@@ -21,7 +21,7 @@ func render(keys: Array, values: Array, tableName: String, isCreateMode: bool):
 	# Let's assume keys and values have same length
 	for i in values.size():
 		var node = editCont.instance()
-		node.get_node("Label").text = keys[i]
+		node.get_node("Label").text = keys[i] + " (" + types[i] +")"
 		if str(values[i]) != "Null" and !isCreateMode:
 			node.get_node("LineEdit").text = str(values[i])
 		fieldsCont.add_child(node)
@@ -41,6 +41,7 @@ func _on_WindowDialog_popup_hide():
 		i.queue_free()
 
 func _on_Save_Button_pressed():
+	newValues = []
 	for i in fieldsCont.get_children():
 		newValues.append(i.get_node("LineEdit").text)
 	if oldValues.hash() != newValues.hash():

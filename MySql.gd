@@ -13,28 +13,37 @@ func checkError(response_code, body):
 		return null
 
 func getProcedures():
-	self.queryRun("SHOW PROCEDURE STATUS WHERE db = DATABASE()")
+	self.queryRun(["SHOW PROCEDURE STATUS WHERE db = DATABASE()"])
 
 func getProcedureParams(name):
-	self.queryRun('SELECT PARAMETER_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.PARAMETERS WHERE SPECIFIC_NAME="' + name + '"')
+	self.queryRun(['SELECT PARAMETER_NAME, DATA_TYPE, PARAMETER_MODE FROM INFORMATION_SCHEMA.PARAMETERS WHERE SPECIFIC_NAME="' + name + '"'])
 
-func runProcedure(name):
-	print(name)
-	pass
+func runProcedure(name: String, paramsIn: Array, paramsOut: Array):
+	var paramsInString = ""
+	var paramsOutString = ""
+	for i in paramsIn:
+		paramsInString += i + ", "
+	for i in paramsOut:
+		paramsOutString += "@" + i+ ", "
+	paramsOutString = paramsOutString.trim_suffix(", ")
+	print(["CALL " + name + "(" + paramsInString + paramsOutString + ");", "SELECT " + paramsOutString + ";"])
+	self.queryRun(["CALL " + name + "(" + paramsInString + paramsOutString + ");", "SELECT " + paramsOutString + ";"])
 
 func getTables():
-	self.queryRun("show full tables where Table_Type = 'BASE TABLE'")
+	self.queryRun(["show full tables where Table_Type = 'BASE TABLE'"])
 
 func getViews():
-	self.queryRun("show full tables where Table_Type = 'VIEW'")
+	self.queryRun(["show full tables where Table_Type = 'VIEW'"])
 	
 func selectTable(tableName):
-	self.queryRun("SELECT * FROM " + tableName)
+	self.queryRun(["SELECT * FROM " + tableName])
+
+func tableSpecs(tableName):
+	self.queryRun(["DESCRIBE " + tableName])
 
 func insertValues(tableName: String, object: Dictionary):
 	#self.queryRun()
-	print("INSERT INTO " + tableName + "(" + var2str(object.keys()).trim_prefix("[ ").trim_suffix(" ]") + ") VALUES(" + var2str(object.values()).trim_prefix("[ ").trim_suffix(" ]") + ")")
-
+	print(["INSERT INTO " + tableName + "(" + var2str(object.keys()).trim_prefix("[ ").trim_suffix(" ]") + ") VALUES(" + var2str(object.values()).trim_prefix("[ ").trim_suffix(" ]") + ")"])
 
 func updateValues(tableName: String, object: Dictionary, oldObject: Dictionary):
 	var set = ""
@@ -54,11 +63,12 @@ func updateValues(tableName: String, object: Dictionary, oldObject: Dictionary):
 		else:
 			where = where + i + ' = "' + str(oldObject[i]) + '", '
 	where.erase(where.length() - 2, 2)
-	print("UPDATE " + tableName + " SET " + set + " WHERE " + where)
+	print(["UPDATE " + tableName + " SET " + set + " WHERE " + where])
 
 
-func queryRun(text: String):
-	var text1 = {"query": text }
+func queryRun(texts: Array):
+	var text1 = {"queries": texts }
 	var json = JSON.print(text1)
+	print(json)
 	var headers = ["Content-Type: application/json"]
 	return request(url, headers, true, HTTPClient.METHOD_POST, json)
