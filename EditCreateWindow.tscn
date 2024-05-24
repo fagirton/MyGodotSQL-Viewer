@@ -36,25 +36,25 @@ margin_bottom = 473.0
 size_flags_vertical = 3
 
 [node name="FieldsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 803.0
+margin_right = 810.0
 margin_bottom = 444.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 807.0
+margin_left = 814.0
 margin_right = 924.0
 margin_bottom = 444.0
 alignment = 1
 
 [node name="Save Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 margin_top = 195.0
-margin_right = 117.0
+margin_right = 110.0
 margin_bottom = 220.0
-text = "Save N Upload"
+text = "Update"
 
 [node name="Close Window" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 margin_top = 224.0
-margin_right = 117.0
+margin_right = 110.0
 margin_bottom = 249.0
 text = "Close window"
 

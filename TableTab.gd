@@ -86,6 +86,7 @@ func _on_WindowDialog_reloadData():
 
 func _on_WindowDialog_createEntry(keys, newValues):
 	print(keys, newValues)
+	$HTTPRequest.insertValues(self.name, arrToDict(keys, newValues))
 
 func arrToDict(keys: Array, values: Array):
 	var dict: Dictionary
